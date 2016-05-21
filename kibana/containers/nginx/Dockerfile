@@ -1,4 +1,4 @@
-FROM nginx:1.9.4
+FROM nginx:1.10.0
 
 ADD ./entrypoint.sh /entrypoint.sh
 
