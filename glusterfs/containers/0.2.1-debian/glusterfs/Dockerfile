@@ -1,13 +1,12 @@
-FROM centos:7
+FROM debian:jessie
 
-RUN yum install -y wget && \
-    wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm && \
-    rpm -ivh epel-release-7-5.noarch.rpm && \
-    wget -P /etc/yum.repos.d http://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/glusterfs-epel.repo && \
-    yum install -y glusterfs-server glusterfs glusterfs-fuse jq curl && \
-    mv /var/lib/glusterd/hooks/1/set/post/S30samba-set.sh /var/lib/glusterd/hooks/1/set/post/dS30samba-set.sh && \
-    mv /var/lib/glusterd/hooks/1/start/post/S30samba-start.sh /var/lib/glusterd/hooks/1/start/post/dS30samba-start.sh && \
-    mv /var/lib/glusterd/hooks/1/stop/pre/S30samba-stop.sh /var/lib/glusterd/hooks/1/stop/pre/dS30samba-stop.sh
+RUN echo deb http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/jessie/apt jessie main > \
+      /etc/apt/sources.list.d/gluster.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D5DC52DC && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y glusterfs-server glusterfs-client jq curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/*
 
 VOLUME ["/data/glusterfs/brick1"]
 
@@ -20,5 +19,5 @@ EXPOSE 24008/udp
 EXPOSE 49152
 
 # Add Giddyup
-ADD https://github.com/cloudnautique/giddyup/releases/download/v0.8.0/giddyup /usr/local/bin/giddyup
+ADD https://github.com/cloudnautique/giddyup/releases/download/v0.10.0/giddyup /usr/local/bin/giddyup
 RUN chmod +x /usr/local/bin/giddyup
