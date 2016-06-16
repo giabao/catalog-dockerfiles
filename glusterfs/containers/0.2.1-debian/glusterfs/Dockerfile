@@ -19,5 +19,5 @@ EXPOSE 24008/udp
 EXPOSE 49152
 
 # Add Giddyup
-ADD https://github.com/cloudnautique/giddyup/releases/download/v0.10.0/giddyup /usr/local/bin/giddyup
+ADD https://github.com/cloudnautique/giddyup/releases/download/v0.11.0/giddyup /usr/local/bin/giddyup
 RUN chmod +x /usr/local/bin/giddyup
